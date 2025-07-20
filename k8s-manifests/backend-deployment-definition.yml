@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: sb-backend-deployment
+    labels:
+       app: smallboy
+       type: backend
+spec:
+  template:
+    metadata:
+       name: sb-backend-pod
+       labels:
+        app: smallboy
+        type: backend
+    spec:
+     containers:
+      - name: sb-backend-pod
+        image: danklofan/smallboy-server
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "768Mi"
+  selector:
+    matchLabels:
+      type: backend
+      app: smallboy
+  replicas: 1

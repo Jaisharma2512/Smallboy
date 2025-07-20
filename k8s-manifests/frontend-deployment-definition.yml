@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: sb-frontend-deployment
+    labels:
+       app: smallboy
+       type: frontend
+spec:
+  template:
+    metadata:
+       name: sb-frontend-pod
+       labels:
+          app: smallboy
+          type: frontend
+    spec:
+     containers:
+      - name: sb-frontend-pod
+        image: danklofan/smallboy-client
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "768Mi"
+  selector:
+    matchLabels:
+      type: frontend
+      app: smallboy
+  replicas: 1
