@@ -15,7 +15,7 @@ spec:
     spec:
      containers:
       - name: sb-frontend-pod
-        image: danklofan/smallboy-client
+        image: danklofan/smallboy-client:fixed
         resources:
           requests:
             cpu: "250m"
