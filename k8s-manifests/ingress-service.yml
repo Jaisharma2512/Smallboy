@@ -11,7 +11,7 @@ spec:
  tls:
   - hosts:
     - smallboy.danklofan.com
-    secretname: myapp-tls
+    secretName: myapp-tls
     
  rules:
   - host: smallboy.danklofan.com
