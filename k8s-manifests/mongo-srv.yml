@@ -4,7 +4,8 @@ metadata:
   name: mongo-svc
 spec:
   selector:
-    app: mongo
+       app: smallboy
+       type: database
   ports:
     - port: 27017
       targetPort: 27017
