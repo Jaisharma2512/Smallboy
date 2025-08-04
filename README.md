@@ -41,32 +41,96 @@ To run the URL Shortener Web Application locally, follow these steps:
   -Client ```npm run dev```
 
 The URL Shortener Web Application will be running on `http://localhost:your-port-number`.
+To run the application on GCP Cloud do the following steps:
 
-## Usage
-1. Access the application at `http://localhost:your-port-number` in your web browser.
-2. Enter the long URL you want to shorten in the input field.
-3. Optionally, you can provide a custom short URL code for the link.
-4. Click the "Shorten URL" button to generate the shortened version.
-5. The shortened URL will be displayed in the output field, and it will be automatically copied to your clipboard for easy sharing.
+Create a GCP VM of type- e2-medium or better.
+Firewall: ✅ Allow HTTP & HTTPS traffic
+🛠️ Part 3: Install Jenkins
 
-## Technologies Used
-- Frontend:
-- React
-- Chakra UI
-- React Router
-- Axios
+Update & install dependencies: sudo apt update && sudo apt upgrade -y sudo apt install openjdk-17-jdk -y
+Add Jenkins repository: curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee
+/usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]
+https://pkg.jenkins.io/debian-stable binary/ | sudo tee
+/etc/apt/sources.list.d/jenkins.list > /dev/null 3. Install Jenkins: sudo apt update sudo apt install jenkins -y 4. Start Jenkins: sudo systemctl enable jenkins sudo systemctl start jenkins 🌐 Part 4: Access Jenkins Web UI Get your VM's external IP from the GCP console.
 
-- Backend:
-- Node.js
-- Express
-- MongoDB (via Mongoose)
+Visit: http://<EXTERNAL_IP>:8080
 
-## Deployment
-- Backend: Deployed on [Render](https://render.com)
-- Frontend: Deployed on [Vercel](https://vercel.com)
+🔓 Part 5: Unlock Jenkins sudo cat /var/lib/jenkins/secrets/initialAdminPassword Paste the password into the web UI to unlock Jenkins.
 
-## Contributing
+🧩 Part 6: Install Recommended Plugins On first login, Jenkins asks for plugin installation — select "Install suggested plugins".
+
+Create your first admin user after plugins install.
+
+🔧 Part 7: Install Additional Tools Install required CLIs and Docker:
+
+Docker
+sudo apt install docker.io -y sudo usermod -aG docker jenkins sudo systemctl restart docker sudo systemctl restart jenkins
+
+Google Cloud SDK
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" |
+sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg |
+sudo apt-key add -
+
+sudo apt update && sudo apt install google-cloud-sdk -y
+
+kubectl
+sudo apt install kubectl -y
+
+🔐 Part 8: Add Service Account Key for GKE 1)Create a service account in IAM: Roles: Kubernetes Admin, Viewer, Storage Admin, etc. 2)Download JSON key. 3)In Jenkins:
+
+Go to: Manage Jenkins → Credentials → Global → Add Credentials Type: Secret file Upload the JSON key ID: gcp-creds
+
+🔁 Final Steps Reboot the VM or restart Jenkins: sudo systemctl restart jenkins
+
+Usage
+Access the application at http://localhost:your-port-number in your web browser.
+Enter the long URL you want to shorten in the input field.
+Optionally, you can provide a custom short URL code for the link.
+Click the "Shorten URL" button to generate the shortened version.
+The shortened URL will be displayed in the output field, and it will be automatically copied to your clipboard for easy sharing.
+Technologies Used
+Frontend:
+
+React
+
+Chakra UI
+
+React Router
+
+Axios
+
+Backend:
+
+Node.js
+
+Express
+
+MongoDB (via Mongoose)
+
+Containerization:
+
+Docker
+
+Kubernetes
+
+IaC:
+
+Terraform
+
+CI/CD:
+
+Jenkins
+
+GitHub Actions
+
+Deployment
+Backend: Deployed on Render
+Frontend: Deployed on Vercel
+Contributing
 Contributions are welcome! If you find any bugs or have suggestions for improvements, please create a new issue or submit a pull request.
 
-## Contact
-For any inquiries or questions, feel free to reach out via [email](mailto:akshaysinghr98@gmail.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/akshay-kumar046203/).
+Contact
+For any inquiries or questions, feel free to reach out via email or connect with me on LinkedIn.
