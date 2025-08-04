@@ -1,15 +1,10 @@
 pipeline{
 agent any
 environment{
-    PROJECT_ID = 'secure-air-461520-g7'
-    CLUSTER_NAME = 'july-cluster'
-    CLUSTER_REGION = 'us-central1'
-    DOCKER_IMAGE_FRONTEND = 'danklofan/smallboy-client'
-    DOCKER_IMAGE_BACKEND = 'danklofan/smallboy-server' 
-    IMAGE_TAG = "build-${env.BUILD_NUMBER}"
-    CREDENTIALS_ID = credentials('gcp_creds')
-    DCKR_CREDENTIALS = credentials('dockerhub-creds')
-    REPO = 'danklofan'
+        PROJECT_ID = 'secure-air-461520-g7'
+        CLUSTER_NAME = 'july-cluster'
+        REGION = 'us-central1'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
 }
 stages{
     stage('Checkout'){
@@ -18,23 +13,74 @@ stages{
            }
 
     }
-    stage('BUILD DOCKER IMAGES'){
-           steps{
-               script{
-                sh 'docker build -t $DOCKER_IMAGE_BACKEND:$IMAGE_TAG ./server'
-                sh 'docker build -t $DOCKER_IMAGE_FRONTEND:$IMAGE_TAG ./client'
-               }
-           }
+ stage('Docker Login') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    '''
+                }
+            }
+        }
+
+        stage('Build & Push Frontend') {
+            steps {
+                sh '''
+                    docker build -t danklofan/smallboy-client:$IMAGE_TAG ./frontend
+                    docker push danklofan/smallboy-client:$IMAGE_TAG
+                '''
+            }
+        }
+
+        stage('Build & Push Backend') {
+            steps {
+                sh '''
+                    docker build -t danklofan/smallboy-server:$IMAGE_TAG ./backend
+                    docker push danklofan/smallboy-server:$IMAGE_TAG
+                '''
+            }
+        }
+
+stage('Apply Terraform - Create Cluster') {
+            steps {
+                sh '''
+                    cd terraform
+                    terraform apply -auto-approve
+                '''
+            }
+        }
+
+        stage('Configure kubectl') {
+            steps {
+                sh '''
+                    cd terraform
+                    eval $(terraform output -raw kubeconfig_command)
+                '''
+            }
+        }
+
+        stage('Update YAMLs with Image Tags') {
+            steps {
+                sh '''
+                    sed -i "s|danklofan/smallboy-client:.*|danklofan/smallboy-client:$IMAGE_TAG|" k8s/03-deployment-frontend.yaml
+                    sed -i "s|danklofan/smallboy-server:.*|danklofan/smallboy-server:$IMAGE_TAG|" k8s/04-deployment-backend.yaml
+                '''
+            }
+        }
+
+        stage('Deploy to GKE') {
+            steps {
+                sh '''
+                    kubectl apply -f k8s/
+                '''
+            }
+        }
     }
 
-    Stage('loging to dkrhub'){
-        
-    }
-
-    stage('Deploy'){
-           steps{
-
-           }
+    post {
+        always {
+            echo '✅ Full CI/CD pipeline complete'
+        }
     }
 }
-}
+ 
