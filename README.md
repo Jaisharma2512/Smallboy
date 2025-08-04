@@ -41,6 +41,7 @@ To run the URL Shortener Web Application locally, follow these steps:
   -Client ```npm run dev```
 
 The URL Shortener Web Application will be running on `http://localhost:your-port-number`.
+
 To run the application on GCP Cloud do the following steps:
 
 Create a GCP VM of type- e2-medium or better.
@@ -52,20 +53,31 @@ Add Jenkins repository: curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.
 /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]
 https://pkg.jenkins.io/debian-stable binary/ | sudo tee
-/etc/apt/sources.list.d/jenkins.list > /dev/null 3. Install Jenkins: sudo apt update sudo apt install jenkins -y 4. Start Jenkins: sudo systemctl enable jenkins sudo systemctl start jenkins 🌐 Part 4: Access Jenkins Web UI Get your VM's external IP from the GCP console.
+/etc/apt/sources.list.d/jenkins.list > /dev/null 3. Install Jenkins: sudo apt update sudo apt install jenkins -y 
 
+4. Start Jenkins:
+sudo systemctl enable jenkins
+sudo systemctl start jenkins 
+
+🌐 Part 4: Access Jenkins Web UI 
+Get your VM's external IP from the GCP console.
 Visit: http://<EXTERNAL_IP>:8080
 
-🔓 Part 5: Unlock Jenkins sudo cat /var/lib/jenkins/secrets/initialAdminPassword Paste the password into the web UI to unlock Jenkins.
+🔓 Part 5: Unlock Jenkins 
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword 
+Paste the password into the web UI to unlock Jenkins.
 
-🧩 Part 6: Install Recommended Plugins On first login, Jenkins asks for plugin installation — select "Install suggested plugins".
-
+🧩 Part 6: Install Recommended Plugins 
+On first login, Jenkins asks for plugin installation — select "Install suggested plugins".
 Create your first admin user after plugins install.
 
 🔧 Part 7: Install Additional Tools Install required CLIs and Docker:
 
 Docker
-sudo apt install docker.io -y sudo usermod -aG docker jenkins sudo systemctl restart docker sudo systemctl restart jenkins
+sudo apt install docker.io -y 
+sudo usermod -aG docker jenkins 
+sudo systemctl restart docker 
+sudo systemctl restart jenkins
 
 Google Cloud SDK
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" |
@@ -79,11 +91,18 @@ sudo apt update && sudo apt install google-cloud-sdk -y
 kubectl
 sudo apt install kubectl -y
 
-🔐 Part 8: Add Service Account Key for GKE 1)Create a service account in IAM: Roles: Kubernetes Admin, Viewer, Storage Admin, etc. 2)Download JSON key. 3)In Jenkins:
+🔐 Part 8: Add Service Account Key for GKE 
+1)Create a service account in IAM: Roles: Kubernetes Admin, Viewer, Storage Admin, etc. 
+2)Download JSON key. 
+3)In Jenkins:
 
-Go to: Manage Jenkins → Credentials → Global → Add Credentials Type: Secret file Upload the JSON key ID: gcp-creds
+Go to: Manage Jenkins → Credentials → Global → Add Credentials
+Type: Secret file 
+Upload the JSON key 
+ID: gcp-creds
 
-🔁 Final Steps Reboot the VM or restart Jenkins: sudo systemctl restart jenkins
+🔁 Final Steps Reboot the VM or restart Jenkins: 
+sudo systemctl restart jenkins
 
 Usage
 Access the application at http://localhost:your-port-number in your web browser.
@@ -91,44 +110,30 @@ Enter the long URL you want to shorten in the input field.
 Optionally, you can provide a custom short URL code for the link.
 Click the "Shorten URL" button to generate the shortened version.
 The shortened URL will be displayed in the output field, and it will be automatically copied to your clipboard for easy sharing.
+
 Technologies Used
 Frontend:
-
 React
-
 Chakra UI
-
 React Router
-
 Axios
-
 Backend:
-
 Node.js
-
 Express
-
 MongoDB (via Mongoose)
-
 Containerization:
-
 Docker
-
 Kubernetes
-
 IaC:
-
 Terraform
-
 CI/CD:
-
 Jenkins
-
 GitHub Actions
 
 Deployment
 Backend: Deployed on Render
 Frontend: Deployed on Vercel
+
 Contributing
 Contributions are welcome! If you find any bugs or have suggestions for improvements, please create a new issue or submit a pull request.
 
