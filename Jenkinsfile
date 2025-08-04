@@ -7,7 +7,9 @@ environment{
     DOCKER_IMAGE_FRONTEND = 'danklofan/smallboy-client'
     DOCKER_IMAGE_BACKEND = 'danklofan/smallboy-server' 
     IMAGE_TAG = "build-${env.BUILD_NUMBER}"
-    CREDENTIALS_ID = 'gcp_creds'
+    CREDENTIALS_ID = credentials('gcp_creds')
+    DCKR_CREDENTIALS = credentials('dockerhub-creds')
+    REPO = 'danklofan'
 }
 stages{
     stage('Checkout'){
