@@ -42,18 +42,27 @@ To run the URL Shortener Web Application locally, follow these steps:
 
 The URL Shortener Web Application will be running on `http://localhost:your-port-number`.
 
-To run the application on GCP Cloud do the following steps:
+## To run the application on GCP Cloud, do the following steps:
 
-Create a GCP VM of type- e2-medium or better.
-Firewall: ✅ Allow HTTP & HTTPS traffic
+Part 1) Create a GCP VM of type- e2-medium or better.
+
+Part 2 )Firewall: ✅ Allow HTTP & HTTPS traffic
+
 🛠️ Part 3: Install Jenkins
 
-Update & install dependencies: sudo apt update && sudo apt upgrade -y sudo apt install openjdk-17-jdk -y
-Add Jenkins repository: curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee
+1. Update & install dependencies: 
+sudo apt update && sudo apt upgrade -y 
+sudo apt install openjdk-17-jdk -y
+
+2. Add Jenkins repository: 
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee
 /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]
 https://pkg.jenkins.io/debian-stable binary/ | sudo tee
-/etc/apt/sources.list.d/jenkins.list > /dev/null 3. Install Jenkins: sudo apt update sudo apt install jenkins -y 
+/etc/apt/sources.list.d/jenkins.list > /dev/null 
+
+3. Install Jenkins: sudo apt update sudo apt install jenkins -y 
 
 4. Start Jenkins:
 sudo systemctl enable jenkins
