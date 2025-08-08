@@ -1,34 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: sb-frontend-deployment
-    namespace: sb-ns
-    labels:
-       app: smallboy
-       type: frontend
+  name: sb-frontend-deployment
+  namespace: sb-ns
+  labels:
+    app: smallboy
+    type: frontend
 spec:
-  template:
-    metadata:
-       name: sb-frontend-pod
-       labels:
-          app: smallboy
-          type: frontend
-    spec:
-     containers:
-      - name: sb-frontend-pod
-        image: danklofan/smallboy-client:fixed
-        resources:
-          requests:
-            cpu: "250m"
-            memory: "512Mi"
-          limits:
-            cpu: "500m"
-            memory: "768Mi"
-        envFrom:
-          - secretRef:
-             name: client-secret
+  replicas: 1
   selector:
     matchLabels:
-      type: frontend
       app: smallboy
-  replicas: 1
+      type: frontend
+  template:
+    metadata:
+      labels:
+        app: smallboy
+        type: frontend
+    spec:
+      containers:
+        - name: sb-frontend-pod
+          image: danklofan/smallboy-client:fixed
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "768Mi"
+          envFrom:
+            - secretRef:
+                name: client-secret
+          ports:
+            - containerPort: 80  # nginx default port

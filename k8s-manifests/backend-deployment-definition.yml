@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: sb-backend-deployment
-    namespace: sb-ns
-    labels:
-       app: smallboy
-       type: backend
+  name: sb-backend-deployment
+  namespace: sb-ns
+  labels:
+    app: smallboy
+    type: backend
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smallboy
+      type: backend
   template:
     metadata:
-       name: sb-backend-pod
-       labels:
+      labels:
         app: smallboy
         type: backend
     spec:
-     containers:
-      - name: sb-backend-pod
-        image: danklofan/smallboy-server
-        resources:
-          requests:
-            cpu: "250m"
-            memory: "512Mi"
-          limits:
-            cpu: "500m"
-            memory: "768Mi"
-        envFrom:
-          - secretRef:
+      containers:
+        - name: sb-backend-pod
+          image: danklofan/smallboy-server
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "768Mi"
+          envFrom:
+            - secretRef:
                 name: server-secret
-
-  selector:
-    matchLabels:
-      type: backend
-      app: smallboy
-  replicas: 1
+          ports:
+            - containerPort: 5000

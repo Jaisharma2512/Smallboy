@@ -1,4 +1,4 @@
-apiVersion: v1 
+apiVersion: v1
 kind: Service
 metadata:
   name: frontend-service
@@ -7,11 +7,11 @@ metadata:
     app: smallboy
     type: frontend
 spec:
- type: ClusterIP
- ports:
-  - name: http
-    targetPort: 80
-    port: 3000
- selector:
-  app: smallboy
-  type: frontend
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80  # matches containerPort in Deployment
+  selector:
+    app: smallboy
+    type: frontend
