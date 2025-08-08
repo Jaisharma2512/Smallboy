@@ -4,15 +4,10 @@ metadata:
    name: smallboy-ingress
    namespace: sb-ns
    annotations: 
-     kubernetes.io/ingress.class: "gce"
      networking.gke.io/managed-certificates: smallboy-cert
 
 spec:
- tls:
-  - hosts:
-    - smallboy.danklofan.com
-    secretName: myapp-tls
-    
+ ingressClassName: gce
  rules:
   - host: smallboy.danklofan.com
     http:
