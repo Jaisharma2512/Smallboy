@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
-  namespace: app1
+  namespace: sb-ns
   labels:
     app: smallboy
     type: backend

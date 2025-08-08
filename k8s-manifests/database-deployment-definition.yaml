@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: sb-database-deployment
-    namespace: app1
+    namespace: sb-ns
     labels:
        app: smallboy
        type: database

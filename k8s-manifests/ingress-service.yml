@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
    name: smallboy-ingress
-   namespace: app1
+   namespace: sb-ns
    annotations: 
      kubernetes.io/ingress.class: "gce"
      networking.gke.io/managed-certificates: smallboy-cert
