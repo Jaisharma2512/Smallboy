@@ -1,8 +1,0 @@
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-   name: smallboy-cert
-   namespace: sb-ns
-spec:
-  domains:
-   - smallboy.danklofan.com

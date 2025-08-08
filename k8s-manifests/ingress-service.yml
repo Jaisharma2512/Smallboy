@@ -4,8 +4,8 @@ metadata:
   name: smallboy-ingress
   namespace: sb-ns
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kcert.dev/ingress: "managed"
+    kcert.dev/solver-ingress-port: "80"
 spec:
   ingressClassName: nginx
   tls:
