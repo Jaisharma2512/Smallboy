@@ -17,9 +17,6 @@ spec:
      containers:
       - name: sb-database-pod
         image: mongo:6.0.13-jammy
-        envFrom:
-          - secretRef:
-              name: sb-secret
         ports:
             - containerPort: 27017
         volumeMounts:
