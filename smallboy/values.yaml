@@ -1,0 +1,29 @@
+frontend:
+  image:
+    repository: danklofan/smallboy-client
+    tag: fixed
+  replicaCount: 1
+  service:
+     type: ClusterIP
+     port: 
+  ingress:
+
+backend:
+  image:
+    repository: danklofan/smallboy-server
+    tag: latest
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 
+  ingress:
+
+database:
+  image:
+    repository: mongo
+    tag: 6.0.13-jamy
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 
+    

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-frontend-service
+  namespace: sb-ns
+  labels:
+    app: smallboy
+    type: frontend
+spec:
+  type: {{ required "Error: frontend.service.type is a required field" .Values.frontend.service.type }}
+  ports:
+    - name: http
+      port: {{ required ""}}
+      targetPort: 80  # matches containerPort in Deployment
+  selector:
+    app: smallboy
+    type: frontend

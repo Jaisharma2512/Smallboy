@@ -1,0 +1,14 @@
+apiVersion: v1 
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+  namespace: sb-ns
+  labels:
+    app: smallboy
+    type: database
+spec:
+  accessModes:
+   - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
