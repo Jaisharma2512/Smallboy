@@ -5,8 +5,7 @@ metadata:
   namespace: sb-ns
 spec:
   selector:
-       app: smallboy
-       type: database
+    {{- include "datblabel" . | indent 2  }}
   ports:
     - port: {{ .Values.database.service.port }}
       targetPort: {{ .Values.database.service.port }}

@@ -4,8 +4,7 @@ metadata:
   name: {{ .Release.Name }}-frontend-service
   namespace: sb-ns
   labels:
-    app: smallboy
-    type: frontend
+    {{- include "frontendlabel" . | indent 2  }}
 spec:
   type: {{ default "ClusterIP" .Values.frontend.service.type }}
   ports:
@@ -13,5 +12,4 @@ spec:
       port: {{ .Values.frontend.service.port }}
       targetPort: {{ .Values.database.service.port }}
   selector:
-    app: smallboy
-    type: frontend
+    {{- include "frontendlabel" . | indent 2  }}

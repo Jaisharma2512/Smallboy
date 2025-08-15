@@ -4,19 +4,16 @@ metadata:
   name: {{ .Release.Name }}-sb-backend-deployment
   namespace: sb-ns
   labels:
-    app: smallboy
-    type: backend
+        {{- include "backendlabel" . | indent 2  }}
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
-      app: smallboy
-      type: backend
+        {{- include "backendlabel" . | indent 4 }}
   template:
     metadata:
       labels:
-        app: smallboy
-        type: backend
+        {{- include "backendlabel" . | indent 6  }}
     spec:
       containers:
         - name: sb-backend-pod
