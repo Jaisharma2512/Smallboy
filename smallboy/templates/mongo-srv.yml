@@ -8,5 +8,5 @@ spec:
        app: smallboy
        type: database
   ports:
-    - port: 27017
-      targetPort: 27017
+    - port: {{ .Values.database.service.port }}
+      targetPort: {{ .Values.database.service.port }}

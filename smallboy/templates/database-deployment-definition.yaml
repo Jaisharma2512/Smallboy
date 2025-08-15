@@ -18,7 +18,7 @@ spec:
       - name: sb-database-pod
         image: {{ required "Error: Image.repository is a required field" .Values.database.image.repository }}:{{ default "latest" .Values.database.image.tag }}
         ports:
-            - containerPort: 27017
+            - containerPort: {{ .Values.database.service.port }}
         volumeMounts:
             - name: mongo-storage
               mountPath: /data/db
@@ -31,4 +31,4 @@ spec:
     matchLabels:
       type: database
       app: smallboy
-  replicas: {{ .Values.database.replicaCount }}
+  replicas: {{ .Values.database.replicaCount | quote }}

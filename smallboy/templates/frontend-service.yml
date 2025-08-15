@@ -7,11 +7,11 @@ metadata:
     app: smallboy
     type: frontend
 spec:
-  type: {{ required "Error: frontend.service.type is a required field" .Values.frontend.service.type }}
+  type: {{ default "ClusterIP" .Values.frontend.service.type }}
   ports:
     - name: http
-      port: {{ required ""}}
-      targetPort: 80  # matches containerPort in Deployment
+      port: {{ .Values.frontend.service.port }}
+      targetPort: {{ .Values.database.service.port }}
   selector:
     app: smallboy
     type: frontend

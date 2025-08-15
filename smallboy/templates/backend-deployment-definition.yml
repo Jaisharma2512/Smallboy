@@ -32,4 +32,4 @@ spec:
             - secretRef:
                 name: server-secret
           ports:
-            - containerPort: 5000
+            - containerPort: {{ .Values.backend.service.port }}

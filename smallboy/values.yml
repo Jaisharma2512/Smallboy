@@ -5,8 +5,7 @@ frontend:
   replicaCount: 1
   service:
      type: ClusterIP
-     port: 
-  ingress:
+     port: 80
 
 backend:
   image:
@@ -15,15 +14,22 @@ backend:
   replicaCount: 1
   service:
     type: ClusterIP
-    port: 
-  ingress:
+    port: 5000
 
 database:
   image:
     repository: mongo
-    tag: 6.0.13-jamy
+    tag: 6.0.13-jammy
   replicaCount: 1
   service:
-    type: ClusterIP
-    port: 
+    port: 27017
+
+ingress:
+  enabled: true
+  name: smallboy-ingress
+  namespace: sb-ns
+  annotations: 
+    kcert.dev/ingress: "managed"
+    kcert.dev/solver-ingress-port: "80"
+  className: nginx
     

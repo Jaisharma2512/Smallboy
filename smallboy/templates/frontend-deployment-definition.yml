@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: sb-frontend-pod
-          image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
+          image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag | quote }}
           resources:
             requests:
               cpu: "250m"
@@ -32,4 +32,4 @@ spec:
             - secretRef:
                 name: client-secret
           ports:
-            - containerPort: 80  # nginx default port
+            - containerPort: {{ .Values.database.service.port }}
