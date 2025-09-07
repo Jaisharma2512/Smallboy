@@ -32,4 +32,14 @@ ingress:
     kcert.dev/ingress: "managed"
     kcert.dev/solver-ingress-port: "80"
   className: nginx
+  # Add these new keys:
+  host: smallboy.danklofan.com
+  tlsSecret: smallboy-tls
+  paths:
+    - path: /
+      serviceName: frontend-service
+      servicePort: 80
+    - path: /api
+      serviceName: backend-service
+      servicePort: 5000
     
