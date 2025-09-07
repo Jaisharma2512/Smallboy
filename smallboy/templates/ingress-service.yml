@@ -1,39 +1,30 @@
-{{- with .Values.ingress.enabled }}
-
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $.Values.ingress.name }}
-  namespace: {{ $.Values.ingress.namespace }}
+  name: {{ .Values.ingress.name }}
+  namespace: {{ .Values.ingress.namespace }}
   annotations:
-
-  {{- range $key, $value := .Values.ingress.annotations }}
-  {{ $key }}:{{ $val }}
-  {{- end }} 
-
+   {{- range $key, $value := .Values.ingress.annotations }}
+        {{ $key }}: {{ $value }}
+   {{- end }}
 spec:
-  ingressClassName: {{ $.Values.className }}
+  ingressClassName: {{ .Values.className }}
   tls:
     - hosts:
-        - smallboy.danklofan.com
-      secretName: smallboy-tls  # Will be created by cert-manager
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.ingress.tlsSecret }}
   rules:
-    - host: smallboy.danklofan.com
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
-         {{- range $key,$value := .Values.ingress.paths}}
-          - path: /
+{{- range .Values.ingress.paths }}
+          - path: {{ .path }}
             pathType: Prefix
             backend:
               service:
-                name: frontend-service
+                name: {{ .serviceName }}
                 port:
-                  number: 80
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: backend-service
-                port:
-                  number: 5000
+                  number: {{ .servicePort }}
+{{- end }}
 {{- end }}
