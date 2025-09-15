@@ -21,7 +21,7 @@ jobs:
              context: ./client
              push: true
              tags: |
-                ${{ secrets.DOCKERHUB_USERNAME }}/smallboy:client:latest
+                ${{ secrets.DOCKERHUB_USERNAME }}/smallboy-client:latest
                 ${{ secrets.DOCKERHUB_USERNAME }}/smallboy-client:${{ github.sha }}
         
          - name: build and push backend image
@@ -30,6 +30,6 @@ jobs:
             context: ./server
             push: true
             tags: |
-                ${{ secrets.DOCKERHUB_USERNAME }}/smallboy-server:$:latest
-                ${{ secrets.DOCKERHUB_USERNAME }}/smallboy-server:$:${{ github.sha }}
+                ${{ secrets.DOCKERHUB_USERNAME }}/smallboy-server:latest
+                ${{ secrets.DOCKERHUB_USERNAME }}/smallboy-server:${{ github.sha }}
 
