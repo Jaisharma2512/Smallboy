@@ -42,12 +42,11 @@ jobs:
               uses: actions/checkout@v5
 
               # Authenticate with GCP
-            - name: Setup Gcloud SDK
-              uses: google-github-actions/setup-gcloud@v3
+
+            - name: Authenticate to GCP
+              uses: google-github-actions/auth@v3
               with:
-                project_id: natural-motif-469318-d4
-                service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
-                export-default-credentials: true
+                 credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
             
             - name: Get GKE credentials
               uses: google-github-actions/get-gke-credentials@v3
