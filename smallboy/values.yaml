@@ -1,0 +1,42 @@
+frontend:
+  replicaCount: 1
+  image:
+    repository: danklofan/smallboy-client
+    tag: latest
+    pullPolicy: Always
+  service:
+    name: frontend-service
+    type: ClusterIP
+    port: 80
+
+backend:
+  replicaCount: 1
+  image:
+    repository: danklofan/smallboy-server
+    tag: latest
+    pullPolicy: Always
+  service:
+    name: backend-service
+    type: ClusterIP
+    port: 5000
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "512Mi"
+    limits:
+      cpu: "500m"
+      memory: "768Mi"
+  secretName: server-secret
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    kcert.dev/ingress: "managed"
+    kcert.dev/solver-ingress-port: "80"
+  host: smallboy.danklofan.com
+
+tls:
+  - secretName: smallboy-tls
+    hosts:
+      - smallboy.danklofan.com

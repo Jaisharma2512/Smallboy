@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: sb-database-deployment
+    namespace: sb-ns
+    labels:
+       app: smallboy
+       type: database
+spec:
+  template:
+    metadata:
+       name: sb-database-pod
+       labels:
+        app: smallboy
+        type: database
+    spec:
+     containers:
+      - name: sb-database-pod
+        image: mongo:6.0.13-jammy
+        ports:
+            - containerPort: 27017
+        volumeMounts:
+            - name: mongo-storage
+              mountPath: /data/db
+     volumes:
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+
+  selector:
+    matchLabels:
+      type: database
+      app: smallboy
+  replicas: 1

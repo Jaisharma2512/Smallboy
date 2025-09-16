@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sb-backend-deployment
+  namespace: sb-ns
+  labels:
+    app: smallboy
+    type: backend
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app: smallboy
+      type: backend
+  template:
+    metadata:
+      labels:
+        app: smallboy
+        type: backend
+    spec:
+      containers:
+        - name: sb-backend-pod
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          resources:
+            requests:
+              cpu: {{ .Values.backend.resources.requests.cpu }}
+              memory: {{ .Values.backend.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.backend.resources.limits.cpu }}
+              memory: {{ .Values.backend.resources.limits.memory }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.backend.secretName }}
+          ports:
+            - containerPort: {{ .Values.backend.service.port }}

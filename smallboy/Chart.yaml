@@ -1,0 +1,7 @@
+apiVersion: v2
+name: smallboy
+description: A Helm chart for deploying the Smallboy frontend application
+type: application
+version: 0.1.0
+appVersion: "1.0"
+icon: https://raw.githubusercontent.com/danklofan/smallboy/main/logo.png

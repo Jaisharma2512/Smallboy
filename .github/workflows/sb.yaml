@@ -4,7 +4,7 @@ on:
     branches:
         - k8s-resources
 jobs:
-    deployment:
+    build:
         runs-on: ubuntu-latest
         steps:
          - uses: actions/checkout@v5
@@ -32,4 +32,43 @@ jobs:
             tags: |
                 ${{ secrets.DOCKERHUB_USERNAME }}/smallboy-server:latest
                 ${{ secrets.DOCKERHUB_USERNAME }}/smallboy-server:${{ github.sha }}
+
+# deploying on GKE cluster
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v5
+
+              # Authenticate with GCP
+            - name: Setup Gcloud SDK
+              uses: google-github-actions/setup-gcloud@v3
+              with:
+                project_id: natural-motif-469318-d4
+                service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+                export-default-credentials: true
+            
+            - name: Get GKE credentials
+              uses: google-github-actions/get-gke-credentials@v3
+              with:
+                cluster_name: autopilot-cluster-1
+                location: us-central1
+                project_id: natural-motif-469318-d4
+    #---Install Helm
+            - name: install helm
+              uses: azure/setup-helm@v4
+
+
+
+    #-----Deploy using HElm
+            - name: deploy using helm
+              run: |
+                    helm upgrade --install smallboy ./smallboy \
+                    --namespace sb-ns \
+                    --create-namespace \
+                    --set frontend.image.repository=${{ secrets.DOCKERHUB_USERNAME }}/smallboy-client \
+                    --set frontend.image.tag=${{ github.sha }} \
+                    --set backend.image.repository=${{ secrets.DOCKERHUB_USERNAME }}/smallboy-server \
+                    --set backend.image.tag=${{ github.sha }}
 
